@@ -1,5 +1,6 @@
 package sk.itsovy.android.topics;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.Objects;
 
 public class TopicsAdapter extends ListAdapter<Topic, TopicsAdapter.TopicsViewHolder> {
 
+    private OnTopicClickListener listener;
 
     protected TopicsAdapter() {
         super(new DiffUtil.ItemCallback<Topic>() {
@@ -38,6 +40,10 @@ public class TopicsAdapter extends ListAdapter<Topic, TopicsAdapter.TopicsViewHo
         submitList(list);
     }
 
+    public void setListener(OnTopicClickListener listener) {
+        this.listener = listener;
+    }
+
     @NonNull
     @Override
     public TopicsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +54,7 @@ public class TopicsAdapter extends ListAdapter<Topic, TopicsAdapter.TopicsViewHo
 
     @Override
     public void onBindViewHolder(@NonNull TopicsViewHolder holder, int position) {
-        holder.bind(getItem(position));
+        holder.bind(getItem(position), listener);
     }
 
     public static class TopicsViewHolder extends RecyclerView.ViewHolder {
@@ -58,10 +64,19 @@ public class TopicsAdapter extends ListAdapter<Topic, TopicsAdapter.TopicsViewHo
         public TopicsViewHolder(@NonNull View layout) {
             super(layout);
             textView = layout.findViewById(android.R.id.text1);
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                textView.setTextAppearance(android.R.style.TextAppearance_Large);
+            }
         }
 
-        public void bind(Topic item) {
+        public void bind(final Topic item, final OnTopicClickListener listener) {
             textView.setText(item.getTopic());
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onTopicClick(item);
+                }
+            });
         }
     }
 }

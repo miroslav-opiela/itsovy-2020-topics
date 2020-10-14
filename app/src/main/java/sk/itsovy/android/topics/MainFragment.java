@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements OnTopicClickListener {
 
 
     public MainFragment() {
@@ -33,6 +34,14 @@ public class MainFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewTopics);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         TopicsAdapter adapter = new TopicsAdapter();
+        adapter.setListener(this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onTopicClick(Topic topic) {
+        TopicsViewModel model = new ViewModelProvider(requireActivity())
+                .get(TopicsViewModel.class);
+        model.setSelectedTopic(topic);
     }
 }
