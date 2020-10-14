@@ -12,13 +12,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_activity, new MainFragment())
-                .commit();
+        if (smallDevice()) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_activity, new MainFragment())
+                    .commit();
 
-        TopicsViewModel model = new ViewModelProvider(this).get(TopicsViewModel.class);
-        model.getSelectedTopic().observe(this, this::showDetailActivity);
+            TopicsViewModel model = new ViewModelProvider(this).get(TopicsViewModel.class);
+            model.getSelectedTopic().observe(this, this::showDetailActivity);
+        }
+    }
+
+    private boolean smallDevice() {
+        return findViewById(R.id.main_activity) != null;
     }
 
     private void showDetailActivity(Topic topic) {
