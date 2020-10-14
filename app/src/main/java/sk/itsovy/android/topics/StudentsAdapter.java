@@ -1,8 +1,10 @@
 package sk.itsovy.android.topics;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,6 +25,16 @@ public class StudentsAdapter
         Arrays.fill(counts, 1);
     }
 
+    // getter
+    public String[] getStudents() {
+        return students;
+    }
+
+    // getter
+    public int[] getCounts() {
+        return counts;
+    }
+
     @NonNull
     @Override
     public StudentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,7 +45,8 @@ public class StudentsAdapter
 
     @Override
     public void onBindViewHolder(@NonNull StudentsViewHolder holder, int position) {
-        holder.bind(students[position], counts[position]);
+        // potrebujeme menit veci v instancnej premennej pole, preto posielame referenciu
+        holder.bind(students[position], counts, position);
     }
 
     @Override
@@ -52,9 +65,23 @@ public class StudentsAdapter
             textView = itemView.findViewById(R.id.singleStudentTextView);
         }
 
-        public void bind(String student, int count) {
+        public void bind(String student, int[] counts, int index) {
             textView.setText(student);
-            spinner.setSelection(count);
+            spinner.setSelection(counts[index]);
+            // ked sa klikne na spinner
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                    // pozicia je v nasom pripade aj hodnota. Ak by to bolo inak, je potrebne to vytiahnut z toho string array
+                    counts[index] = position;
+                    Log.d("SPINNER", student + " " + position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
     }
 }

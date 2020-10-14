@@ -22,7 +22,11 @@ public class Topic {
         return student;
     }
 
-    public void setStudent(String student) {
-        this.student = student;
+    public void appendStudent(String selected) {
+        if (student.equals("n/a")) {
+            student = selected;
+        } else {
+            student = student + ", " + selected;
+        }
     }
 }
