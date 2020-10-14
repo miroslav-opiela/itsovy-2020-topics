@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +17,8 @@ import android.widget.TextView;
 
 public class DetailFragment extends Fragment {
 
-    private TextView textView;
+    private TextView textViewTopic;
+    private TextView textViewStudent;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -30,13 +34,22 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        textView = view.findViewById(R.id.textViewDetail);
+        textViewTopic = view.findViewById(R.id.textViewDetail);
+        textViewStudent = view.findViewById(R.id.textViewSelectedStudent);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewStudents);
+        String[] students = getResources().getStringArray(R.array.names);
+        StudentsAdapter adapter = new StudentsAdapter(students);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL));
 
         TopicsViewModel model = new ViewModelProvider(requireActivity()).get(TopicsViewModel.class);
         model.getSelectedTopic().observe(this, this::setTopic);
+
     }
 
     private void setTopic(Topic topic) {
-        textView.setText(topic.getTopic());
+        textViewTopic.setText(topic.getTopic());
+        textViewStudent.setText(topic.getStudent());
     }
 }

@@ -2,4 +2,28 @@
     <string name="app_name">Topics</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="assign_student">ASSIGN STUDENT</string>
+
+    <string-array name="names">
+        <item>Koloman</item>
+        <item>Boris</item>
+        <item>Terézia</item>
+        <item>Vladimíra</item>
+        <item>Hedviga</item>
+        <item>Lukáš</item>
+        <item>Kristián</item>
+        <item>Vendelín</item>
+        <item>Uršuľa</item>
+        <item>Sergej</item>
+        <item>Alojzia</item>
+
+    </string-array>
+
+    <string-array name="spinner_options">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>
